@@ -1,84 +1,105 @@
-import { AuthenticationError, UserInputError } from 'apollo-server-errors';
-import bcrypt from 'bcrypt';
+import { AuthenticationError, UserInputError } from 'apollo-server-errors'
+import bcrypt from 'bcrypt'
 
-import { JWT_SECRET } from '../config';
-
-import * as jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken'
+import { JWT_SECRET } from '../config'
 
 import {
-  fetchAllUsers,
-  findByEmail,
-  createNewUser,
-  deleteUserById,
-  deleteUserWithEmail,
-} from '../services/user.service';
-import { ICreateUser, ILogin, IUser } from '../interfaces/User';
+    fetchAllUsers,
+    findByEmail,
+    createNewUser,
+    deleteUserById,
+    deleteUserWithEmail,
+} from '../services/user.service'
+import { ICreateUser, ILogin, IUser } from '../interfaces/User'
 
 async function getUsers() {
-  return await fetchAllUsers();
+    try {
+        return await fetchAllUsers()
+    } catch (error) {
+        console.log('error', error)
+        throw new Error('Internal Server Error')
+    }
 }
 
 async function createUser(userData: ICreateUser) {
-  const user = await findByEmail(userData.email);
-  if (user) {
-    throw new UserInputError('Email exists', {
-      argumentName: 'email',
-    });
-  }
+    try {
+        const user = await findByEmail(userData.email)
+        if (user) {
+            throw new UserInputError('Email exists', {
+                argumentName: 'email',
+            })
+        }
 
-  const hashedPassword = await bcrypt.hash(userData.password, 10);
-  userData.password = hashedPassword;
-  const newUser = await createNewUser({
-    ...userData,
-    password: hashedPassword,
-  });
-  return {
-    token: jwt.sign(newUser, JWT_SECRET, {
-      expiresIn: '1d',
-    }),
-  };
+        const hashedPassword = await bcrypt.hash(userData.password, 10)
+        // eslint-disable-next-line no-param-reassign
+        userData.password = hashedPassword
+        const newUser = await createNewUser({
+            ...userData,
+            password: hashedPassword,
+        })
+        return {
+            token: jwt.sign(newUser, JWT_SECRET, {
+                expiresIn: '1d',
+            }),
+        }
+    } catch (error) {
+        console.log('error', error)
+        throw new Error('Internal Server Error')
+    }
 }
 
 async function loginUser(userData: ILogin) {
-  const user = await findByEmail(userData.email);
-  if (!user) {
-    throw new AuthenticationError('User not found');
-  }
-  const isMatch = await bcrypt.compare(userData.password, user.password);
-  if (!isMatch) throw new AuthenticationError('Password is incorrect');
-  return {
-    token: jwt.sign(user, JWT_SECRET, {
-      expiresIn: '1d',
-    }),
-  };
+    try {
+        const user = await findByEmail(userData.email)
+        if (!user) {
+            throw new AuthenticationError('User not found')
+        }
+        const isMatch = await bcrypt.compare(userData.password, user.password)
+        if (!isMatch) throw new AuthenticationError('Password is incorrect')
+        return {
+            token: jwt.sign(user, JWT_SECRET, {
+                expiresIn: '1d',
+            }),
+        }
+    } catch (error) {
+        throw new Error('Internal Server Error')
+    }
 }
 
 async function getUserByToken(token: string) {
-  if (!token) return null;
-  const user = jwt.verify(token, JWT_SECRET) as IUser;
-  return user;
-  //   const user = await prisma.user.findUnique({
-  //     where: {
-  //       token,
-  //     },
-  //   });
-  //   return user;
-  // }
+    try {
+        if (!token) return null
+        const user = jwt.verify(token, JWT_SECRET) as IUser
+        return user
+    } catch (error) {
+        return null
+    }
 }
 
 async function deleteUser(id: number) {
-  return await deleteUserById(id);
+    try {
+        return await deleteUserById(id)
+    } catch (error) {
+        console.log('error', error)
+        throw new Error('Internal Server Error')
+    }
 }
 
 async function deleteUserByEmail(email: string) {
-  return await deleteUserWithEmail(email);
+    try {
+        return await deleteUserWithEmail(email)
+    } catch (error) {
+        console.log('error', error)
+        throw new Error('Internal Server Error')
+    }
 }
 
 export {
-  getUsers,
-  createUser,
-  loginUser,
-  getUserByToken,
-  deleteUser,
-  deleteUserByEmail,
-};
+    getUsers,
+    createUser,
+    loginUser,
+    getUserByToken,
+    deleteUser,
+    deleteUserByEmail,
+}

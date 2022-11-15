@@ -1,6 +1,6 @@
-import { merge } from 'lodash';
-import { gql } from 'apollo-server';
-import { userTypeDef, userResolvers } from './user';
+import { merge } from 'lodash'
+import { gql } from 'apollo-server'
+import { userTypeDef, userResolvers } from './user'
 
 const Query = `
   type Query {
@@ -9,12 +9,10 @@ const Query = `
   type Mutation {
     _empty: String
   }
-  `;
+  `
 
-let resolvers = {};
+const typeDefs = gql(`${Query}${userTypeDef}`)
 
-const typeDefs = gql(`${Query}${userTypeDef}`);
+const resolvers = merge({}, userResolvers)
 
-resolvers = merge(resolvers, userResolvers);
-
-export { typeDefs, resolvers };
+export { typeDefs, resolvers }

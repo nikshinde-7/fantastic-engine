@@ -1,40 +1,42 @@
 import { useMutation } from '@apollo/client';
-import { Formik, Field, Form, FormikHelpers } from 'formik';
-import { useEffect, useState } from 'react';
+import {
+  Formik, Field, Form, FormikHelpers,
+} from 'formik';
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import { LOGIN_USER } from '../../graphql/queries';
 import WithApollo from '../../lib/WithApollo';
 // import styles from './login-form.module.css';
-import * as Yup from 'yup';
-import { useRouter } from 'next/router';
 
 import { useAuth } from '../../context/state';
 
-interface Values {
-  email: string;
-  password: string;
-}
+import { ILoginFormProps } from '../../interfaces';
+import { LoginSchema } from '../../utils/validationSchemas';
 
-const LoginSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-});
-const styles = { login_box: '' };
 function LoginForm() {
   const router = useRouter();
-  const { user, login, logout } = useAuth();
+
+  // get user login status from context
+  const { user, login } = useAuth();
+
+  // If user is already logged in redirect to dashboard
   if (user) {
     router.push('/dashboard');
   }
+
+  // get login mutation from apollo client
   const [LoginUser] = useMutation(LOGIN_USER);
+
+  // set initial state
   const [error, setError] = useState('');
+
+  // login user
   const onLogin = async (
-    values: Values,
-    { setSubmitting }: FormikHelpers<Values>,
+    values: ILoginFormProps,
+    { setSubmitting }: FormikHelpers<ILoginFormProps>,
   ) => {
     try {
+      // login user
       await localStorage.removeItem('token');
       const { data } = await LoginUser({
         variables: {
@@ -48,16 +50,14 @@ function LoginForm() {
         login();
       }
       setSubmitting(false);
-    } catch (error: any) {
-      setError(error.message);
-
-      console.log('here', error);
+    } catch (err: any) {
+      setError(err.message);
       setSubmitting(false);
     }
   };
 
   return (
-    <div className={styles.login_box + ' p-3'}>
+    <div className=" p-3">
       <h1 className="display-6 mb-3">Login</h1>
       <Formik
         initialValues={{

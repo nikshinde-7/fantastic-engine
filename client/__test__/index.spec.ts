@@ -1,45 +1,30 @@
+/* eslint-disable no-undef */
 import puppeteer from 'puppeteer'; // 1
+
+import { apiUrl, testUser } from './config';
 
 let browser: puppeteer.Browser;
 let page: puppeteer.Page;
-const testUser = {
-  firstName: 'test',
-  lastName: 'test',
-  email: '@fa_eng.com',
-  password: '1234',
-  confirmPassword: '1234',
-  phoneNumber: '1234567890',
-};
+
 // 2
 beforeAll(async () => {
   browser = await puppeteer.launch({
     headless: false,
   });
   page = await browser.newPage();
-  await page.goto('http://localhost:3000/');
+  await page.goto('http://localhost:3000');
+});
+
+test('test env = test', () => {
+  expect(process.env.NODE_ENV).toBe('test');
 });
 
 test('visit signup page', async () => {
   await page.waitForSelector('#nav');
-
-  const button = await page.$eval('#nav-signup', (e) => e.innerHTML);
-  expect(button).toBe(`Sign Up`);
-
-  await page.click('#nav-signup');
-
   await page.waitForSelector('#signUp-form');
 });
 
 test('test validations', async () => {
-  await page.waitForSelector('#nav');
-
-  const button = await page.$eval('#nav-signup', (e) => e.innerHTML);
-  expect(button).toBe(`Sign Up`);
-
-  await page.click('#nav-signup');
-
-  await page.waitForSelector('#signUp-form');
-
   await page.type('#email', testUser.firstName);
 
   await page.type('#password', testUser.password);
@@ -48,7 +33,7 @@ test('test validations', async () => {
 
   const emailValError = await page.$eval('#errors-email', (e) => e.innerHTML);
 
-  expect(emailValError).toBe(`Invalid email`);
+  expect(emailValError).toBe('Invalid email');
 
   await page.type('#email', testUser.email);
 
@@ -61,7 +46,7 @@ test('test validations', async () => {
     (e) => e.innerHTML,
   );
 
-  expect(cnfPassValError).toBe(`Passwords must match`);
+  expect(cnfPassValError).toBe('Passwords must match');
 
   await page.type('#confirmPassword', '34');
 
@@ -72,7 +57,7 @@ test('test validations', async () => {
     (e) => e.innerHTML,
   );
 
-  expect(fNameValError).toBe(`Required`);
+  expect(fNameValError).toBe('Required');
 
   await page.type('#firstName', testUser.firstName);
 
@@ -83,7 +68,7 @@ test('test validations', async () => {
     (e) => e.innerHTML,
   );
 
-  expect(lNameValError).toBe(`Required`);
+  expect(lNameValError).toBe('Required');
 
   await page.type('#lastName', testUser.lastName);
 
@@ -94,7 +79,7 @@ test('test validations', async () => {
     (e) => e.innerHTML,
   );
 
-  expect(phoneValError).toBe(`A phone number is required`);
+  expect(phoneValError).toBe('A phone number is required');
 
   await page.type('#phoneNumber', testUser.phoneNumber);
 
@@ -105,7 +90,7 @@ test('test validations', async () => {
     (e) => e.innerHTML,
   );
 
-  expect(checkBosError).toBe(`You must accept the terms and conditions`);
+  expect(checkBosError).toBe('You must accept the terms and conditions');
 
   await page.focus('#accepted');
 
@@ -113,21 +98,29 @@ test('test validations', async () => {
 });
 
 test('form submit', async () => {
+  expect(process.env.NODE_ENV).toBe('test');
+  jest.setTimeout(30000);
   await page.keyboard.press('Enter');
 
   await page.waitForNavigation();
-
   await page.waitForSelector('#dash-main');
+
+  const welcomeField = await page.$eval(
+    '#dashboard-name',
+    (e) => e.innerHTML,
+  );
+
+  expect(welcomeField).toBe(`Welcome, ${testUser.firstName}`);
 });
 
 test('delete created user', async () => {
+  expect(process.env.NODE_ENV).toBe('test');
+
   await page.waitForSelector('#delete-user');
-
-  await page.focus('#delete-user');
-  await page.keyboard.press('Enter');
+  await page.click('#delete-user');
+  // await page.focus('#delete-user');
+  // await page.keyboard.press('Enter');
   await page.waitForNavigation();
-
-  await page.waitForSelector('#dash-error');
 });
 
 // 4

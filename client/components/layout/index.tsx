@@ -1,5 +1,6 @@
 // components/layout.js
-import type { NextPage } from 'next';
+import React from 'react';
+import { Navbar, Container, Nav } from 'react-bootstrap';
 import Link from 'next/link';
 import { useAuth } from '../../context/state';
 
@@ -8,30 +9,53 @@ interface IProps {
 }
 
 export default function Layout({ children }: IProps) {
-  const { user, login, logout } = useAuth();
+  const { user, logout } = useAuth();
   return (
-    <div id={'nav'}>
-      <Link href={'/'}>
-        <button id={'nav-home'}>Home</button>
-      </Link>
-      {!user && (
-        <>
-          <Link href={'/signUp'}>
-            <button id={'nav-signup'}>Sign Up</button>
-          </Link>
-          <Link href={'/login'}>
-            <button>Login</button>
-          </Link>{' '}
-        </>
-      )}
-      {user && (
-        <>
-          <Link href={'/dashboard'}>
-            <button>Dashboard</button>
-          </Link>
-          <button onClick={logout}>Logout</button>
-        </>
-      )}
+    <div className="col" id="nav">
+      <Navbar expand="lg">
+        <Container>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              {!user && (
+                <>
+                  <Link href="/" passHref>
+                    <button
+                      type="button"
+                      className="btn btn-sm"
+                      id="nav-sighup"
+                    >
+                      Sign Up
+                    </button>
+                  </Link>
+                  <Link href="/login" passHref>
+                    <button type="button" className="btn btn-sm" id="nav-login">
+                      Login
+                    </button>
+                  </Link>
+                </>
+              )}
+              {user && (
+                <>
+                  <Link href="/dashboard" passHref>
+                    <button type="button" className="btn btn-sm">
+                      Dashboard
+                    </button>
+                  </Link>
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-danger"
+                    onClick={logout}
+                  >
+                    Logout
+                  </button>
+                </>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <hr />
       <main>{children}</main>
     </div>
   );
