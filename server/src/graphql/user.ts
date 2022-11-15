@@ -14,8 +14,18 @@ type User {
     phoneNumber: String,
     password: String
 }
+
+type CreatedUser {
+  id: ID!,
+  firstName: String,
+  lastName: String,
+  email: String,
+  phoneNumber: String,
+  password: String
+}
 extend type Query {
-    users: [User]
+    users: [CreatedUser]
+    getUserByToken: CreatedUser
 }
 extend type Mutation {
     createUser(  firstName:String!,
@@ -50,6 +60,12 @@ const userResolvers = {
         throw new AuthenticationError('You must be logged in');
       }
       return await getUsers();
+    },
+    getUserByToken: async (parent: any, args: any, context: any) => {
+      if (!context.user) {
+        throw new AuthenticationError('You must be logged in');
+      }
+      return context.user;
     },
   },
   Mutation: {
