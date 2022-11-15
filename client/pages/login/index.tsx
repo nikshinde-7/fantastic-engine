@@ -2,16 +2,15 @@ import { useMutation } from '@apollo/client';
 import {
   Formik, Field, Form, FormikHelpers,
 } from 'formik';
-import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
 import { LOGIN_USER } from '../../graphql/queries';
 
 import { useAuth } from '../../context/state';
 
 import { ILoginFormProps } from '../../interfaces';
 import { LoginSchema } from '../../utils/validationSchemas';
+import { FormContainer, Container } from '../../components/styledComponents';
 
 function LoginForm() {
   const router = useRouter();
@@ -53,27 +52,8 @@ function LoginForm() {
       setSubmitting(false);
     }
   };
-  const Container = styled.div`
-  padding: 50px 0px;
-  background: #5acee8;
-`;
-
-  const FormContainer = styled.div`
-    z-index: 1;
-    position: relative;
-    border-radius: 15px;
-    background: white;
-    box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.15);
-    padding: 30px;
-    margin: auto;
-    max-width: 100%;
-    width: 540px;
-  `;
   return (
     <Container className=" p-3">
-      <Head>
-        <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-      </Head>
       <FormContainer>
         <h1 className="display-6 mb-3">Login</h1>
         <Formik

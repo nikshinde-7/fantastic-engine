@@ -6,8 +6,6 @@ import {
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import styled from '@emotion/styled';
-import Head from 'next/head';
 import { ADD_USER } from '../graphql/queries';
 
 import { useAuth } from '../context/state';
@@ -15,6 +13,10 @@ import { useAuth } from '../context/state';
 import { ISignUpFromProps } from '../interfaces';
 
 import { SignupSchema } from '../utils/validationSchemas';
+import {
+  FormContainer, FormError, FormHeading, FormInput,
+  FormLabelCheckbox, FormSubmit, Container, FormLabel,
+} from '../components/styledComponents';
 
 function SignUpForm() {
   const router = useRouter();
@@ -52,64 +54,9 @@ function SignUpForm() {
     }
   };
 
-  const FormContainer = styled.div`
-    z-index: 1;
-    position: relative;
-    border-radius: 15px;
-    background: white;
-    box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.15);
-    padding: 30px;
-    margin: auto;
-    max-width: 100%;
-    width: 540px;
-  `;
-
-  const FormHeading = styled.h1`
-    font-family: 'zenon', 'serif';
-    color: #5acee8;
-    font-weight: 500;
-    font-size: 36px;
-    margin-bottom: 15px;
-  `;
-  const FormLabel = styled.label`
-    color: #8c96a3;
-    font-size: 14px;
-    font-weight: 700;
-  `;
-  const FormInput = styled.div`
-    margin-bottom: 15px;
-  `;
-
-  const FormSubmit = styled.button`
-    background-color: #ffcc01;
-    border-radius: 15px;
-    height: 40px;
-    color: #fff;
-    font-weight: 700;
-  `;
-
-  const Container = styled.div`
-    padding: 50px 0px;
-    background: #5acee8;
-  `;
-
-  const FormError = styled.div`
-    color: red;
-    font-size: 12px;
-    margin-top: 5px;
-  `;
-
-  const FormLabelCheckbox = styled.div`
-    color: #616b77;
-    font-size: 14px;
-  `;
-
   return (
 
     <Container id="signUp-form">
-      <Head>
-        <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-      </Head>
       <FormContainer>
         <FormHeading>Sign Up Form</FormHeading>
         <Formik

@@ -3,7 +3,7 @@ const testUser = {
     lastName: 'User',
     email: 'test@email.com',
     phoneNumber: '1234567890',
-    password: '123',
+    password: 'Password@123',
 }
 
 export { testUser }

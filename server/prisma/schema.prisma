@@ -20,5 +20,5 @@ model User {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:postgres@184.73.23.185:5433/postgres?schema=public"
 }

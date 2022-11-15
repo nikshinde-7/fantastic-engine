@@ -17,8 +17,8 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-// const uri = process.env.NEXT_PUBLIC_API_URL;
-const uri = 'http://44.201.180.113:4000';
+const uri = process.env.NEXT_PUBLIC_API_URL;
+// const uri = 'http://44.201.180.113:4000';
 
 const client = new ApolloClient({
   link: authLink.concat(

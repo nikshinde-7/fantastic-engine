@@ -8,19 +8,24 @@ let page: puppeteer.Page;
 
 // 2
 beforeAll(async () => {
+  jest.setTimeout(30000);
   browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
   });
   page = await browser.newPage();
   await page.goto('http://localhost:3000');
 });
 
 test('visit signup page', async () => {
+  jest.setTimeout(30000);
+
   await page.waitForSelector('#nav');
   await page.waitForSelector('#signUp-form');
 });
 
 test('test validations', async () => {
+  jest.setTimeout(30000);
+
   await page.type('#email', testUser.firstName);
 
   await page.type('#password', testUser.password);
@@ -35,7 +40,7 @@ test('test validations', async () => {
 
   await page.type('#email', testUser.email);
 
-  await page.type('#confirmPassword', '12');
+  await page.type('#confirmPassword', 'valid');
 
   await page.focus('#firstName');
   await page.waitForTimeout(500);
@@ -47,7 +52,7 @@ test('test validations', async () => {
 
   expect(cnfPassValError).toBe('Passwords must match');
 
-  await page.type('#confirmPassword', '34');
+  await page.type('#confirmPassword', 'Password@1');
 
   await page.focus('#lastName');
 
@@ -118,6 +123,8 @@ test('form submit', async () => {
 });
 
 test('delete created user', async () => {
+  jest.setTimeout(30000);
+
   await page.waitForSelector('#delete-user');
   await page.waitForTimeout(500);
 

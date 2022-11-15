@@ -2,17 +2,17 @@ const testUser = {
   firstName: 'test',
   lastName: 'test',
   email: '@fa_eng.com',
-  password: '1234',
-  confirmPassword: '1234',
+  password: 'validPassword@1',
+  confirmPassword: 'validPassword@1',
   phoneNumber: '1234567890',
 };
 
 const jestTestUser = {
-  firstName: 'test',
-  lastName: 'test',
-  email: 'test@fa_eng.com',
-  password: 'test',
-  confirmPassword: 'test',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'test@testing.com',
+  password: 'validPassword@1',
+  confirmPassword: 'validPassword@1',
   phoneNumber: '1234567890',
 };
 

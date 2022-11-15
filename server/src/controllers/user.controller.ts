@@ -11,6 +11,11 @@ import {
     deleteUserById,
     deleteUserWithEmail,
 } from '../services/user.service'
+
+import {
+    UserRegistrationRules,
+    UserAuthenticationRules,
+} from '../util/validationSchemas';
 import { ICreateUser, ILogin, IUser } from '../interfaces/User'
 
 async function getUsers() {
@@ -24,6 +29,10 @@ async function getUsers() {
 
 async function createUser(userData: ICreateUser) {
     try {
+
+
+        // Validate Incoming New User Arguments
+        await UserRegistrationRules.validate(userData, {abortEarly: false});
         const user = await findByEmail(userData.email)
         if (user) {
             throw new UserInputError('Email exists', {
@@ -43,14 +52,20 @@ async function createUser(userData: ICreateUser) {
                 expiresIn: '1d',
             }),
         }
-    } catch (error) {
+    } catch (error:any) {
         console.log('error', error)
+        if(error.name === 'ValidationError') {
+            throw new UserInputError(error.errors.join(", "))
+        }
         throw new Error('Internal Server Error')
     }
 }
 
 async function loginUser(userData: ILogin) {
     try {
+
+        // Validate Incoming User Credentials
+        await UserAuthenticationRules.validate(userData, { abortEarly: false });
         const user = await findByEmail(userData.email)
         if (!user) {
             throw new AuthenticationError('User not found')
@@ -62,7 +77,11 @@ async function loginUser(userData: ILogin) {
                 expiresIn: '1d',
             }),
         }
-    } catch (error) {
+    } catch (error:any) {
+        console.log('error', error)
+        if(error.name === 'ValidationError') {
+            throw new UserInputError(error.errors.join(", "))
+        }
         throw new Error('Internal Server Error')
     }
 }
