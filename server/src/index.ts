@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server';
-import { getUserByToken } from './util/prisma';
+import { getUserByToken } from './controllers/user.controller';
 
 import { typeDefs, resolvers } from './graphql/schema';
 // The ApolloServer constructor requires two parameters: your schema

@@ -1,5 +1,9 @@
 import { AuthenticationError } from 'apollo-server-errors';
-import { createUser, getUsers, loginUser } from '../util/prisma';
+import {
+  createUser,
+  getUsers,
+  loginUser,
+} from '../controllers/user.controller';
 import { ICreateUser, ILogin } from '../interfaces/User';
 
 const userTypeDef = `
