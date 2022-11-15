@@ -19,4 +19,26 @@ const findByEmail = (email: string) => {
   });
 };
 
-export { fetchAllUsers, createNewUser, findByEmail };
+const deleteUserById = (id: number) => {
+  return prisma.user.delete({
+    where: {
+      id,
+    },
+  });
+};
+
+const deleteUserWithEmail = (email: string) => {
+  return prisma.user.delete({
+    where: {
+      email,
+    },
+  });
+};
+
+export {
+  fetchAllUsers,
+  createNewUser,
+  findByEmail,
+  deleteUserById,
+  deleteUserWithEmail,
+};

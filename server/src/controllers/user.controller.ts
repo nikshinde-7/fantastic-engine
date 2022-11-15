@@ -9,6 +9,8 @@ import {
   fetchAllUsers,
   findByEmail,
   createNewUser,
+  deleteUserById,
+  deleteUserWithEmail,
 } from '../services/user.service';
 import { ICreateUser, ILogin, IUser } from '../interfaces/User';
 
@@ -64,4 +66,19 @@ async function getUserByToken(token: string) {
   // }
 }
 
-export { getUsers, createUser, loginUser, getUserByToken };
+async function deleteUser(id: number) {
+  return await deleteUserById(id);
+}
+
+async function deleteUserByEmail(email: string) {
+  return await deleteUserWithEmail(email);
+}
+
+export {
+  getUsers,
+  createUser,
+  loginUser,
+  getUserByToken,
+  deleteUser,
+  deleteUserByEmail,
+};

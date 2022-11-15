@@ -3,6 +3,8 @@ import {
   createUser,
   getUsers,
   loginUser,
+  getUserByToken,
+  deleteUserByEmail,
 } from '../controllers/user.controller';
 import { ICreateUser, ILogin } from '../interfaces/User';
 
@@ -35,6 +37,9 @@ extend type Mutation {
       password:String!): AuthPayLoad!
     login(   email: String!,
       password: String!): AuthPayLoad!
+      
+      deleteUserById(id: ID!): CreatedUser
+      deleteUserByEmail(email: String!): CreatedUser
 }
 
 input UserCreateInput {
@@ -74,6 +79,14 @@ const userResolvers = {
     },
     login: async (parent: any, args: ILogin) => {
       return loginUser(args);
+    },
+    deleteUserById: async (parent: any, args: any) => {
+      return false;
+    },
+
+    deleteUserByEmail: async (parent: any, args: any) => {
+      console.log('args', args);
+      return deleteUserByEmail(args.email);
     },
   },
 };
