@@ -31,14 +31,13 @@ type Props = {
 
 export function AuthProvider({ children }: Props) {
   const router = useRouter();
+  const [user, setUser] = useState<boolean>(false);
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       setUser(true);
     }
   }, []);
-
-  const [user, setUser] = useState<boolean>(false);
 
   const login = () => {
     setUser(true);
@@ -57,8 +56,6 @@ export function AuthProvider({ children }: Props) {
   };
 
   return (
-    <>
-      <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-    </>
+    <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
   );
 }

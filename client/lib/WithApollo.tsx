@@ -1,13 +1,9 @@
-import React from 'react';
 import {
   ApolloClient,
-  ApolloProvider,
   HttpLink,
   InMemoryCache,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { useRouter } from 'next/router';
-import nextWithApollo from 'next-with-apollo';
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -21,31 +17,16 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-const WithApollo = nextWithApollo(
-  ({ initialState, headers }) => new ApolloClient({
-    ssrMode: typeof window === 'undefined',
-    link: authLink.concat(
-      new HttpLink({
-        uri: 'http://localhost:4000/',
-      }),
-    ),
+// const uri = process.env.NEXT_PUBLIC_API_URL;
+const uri = 'http://44.201.180.113:4000';
 
-    headers: {
-      ...(headers as Record<string, string>),
-    },
-    cache: new InMemoryCache().restore(initialState || {}),
-  }),
-  {
-    render: ({ Page, props }) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const router = useRouter();
-      return (
-        <ApolloProvider client={props.apollo}>
-          <Page {...props} {...router} />
-        </ApolloProvider>
-      );
-    },
-  },
-);
+const client = new ApolloClient({
+  link: authLink.concat(
+    new HttpLink({
+      uri,
+    }),
+  ),
+  cache: new InMemoryCache(),
+});
 
-export default WithApollo;
+export default client;

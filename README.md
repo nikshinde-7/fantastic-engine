@@ -1,4 +1,4 @@
-# Fantastic Engine in Apollo server and NEXT JS
+# Tipaw tech challenge
 
 In this project we have used following dependencies
 
@@ -18,56 +18,53 @@ In this project we have used following dependencies
 - [x] Bootstrap
 - [x] EmotionCSS
 
-## API End Points
 
-{baseUrl}/ Apollo Studio
+## ✨ Bonus points covered
 
-## Set NODE_ENV Variable (Windows)
-
-```
-SET NODE_ENV=development
-```
-
-## Set NODE_ENV Variable (Linux)
-
-```
-export NODE_ENV=development
-```
+- ✅ Server side rendering (even though not useless here, we are curious to see how you would do it) 
+- ✅ Using GraphQL + Prisma + PostgresQL for the backend 
+- ✅ Automated tests 
+- ✅ A way for users to login (session management) 
+- Building a design system for the UI components
+- ✅ A clear project architecture 
+- Deploy the applications 
 
 ## Install PostgreSQL
 
 https://www.postgresql.org/download/
 
-## Add Dependencies
+
+
+## Install Dependencies
 
 ```
-npm install || yarn
+npm run getpkg
 ```
-
-## Start Server Windows
-
-```
-npm start || yarn start
-```
-
-## Start Server Linux
+## Start App
 
 ```
-cd server && npm start
+npm start
 ```
 
-## ES Lint
+## Testing
 
 ```
-npm run lint
+npm run test
 ```
 
-## Test client with Jest
+### Server testing
 
 ```
-cd client
-npm run testing
+npm run test-server
 ```
+### Client automation testing
+
+```
+npm run test-client
+```
+
+![Testing Example](Automation.gif)
+
 
 ## Postman collection :
 

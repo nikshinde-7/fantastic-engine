@@ -7,9 +7,8 @@ import {
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
+import Head from 'next/head';
 import { ADD_USER } from '../graphql/queries';
-import WithApollo from '../lib/WithApollo';
-// import styles from './signup-form.module.css';
 
 import { useAuth } from '../context/state';
 
@@ -106,7 +105,11 @@ function SignUpForm() {
   `;
 
   return (
+
     <Container id="signUp-form">
+      <Head>
+        <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+      </Head>
       <FormContainer>
         <FormHeading>Sign Up Form</FormHeading>
         <Formik
@@ -263,4 +266,4 @@ function SignUpForm() {
   );
 }
 
-export default WithApollo(SignUpForm);
+export default SignUpForm;

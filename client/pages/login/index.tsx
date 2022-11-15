@@ -2,11 +2,11 @@ import { useMutation } from '@apollo/client';
 import {
   Formik, Field, Form, FormikHelpers,
 } from 'formik';
+import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { LOGIN_USER } from '../../graphql/queries';
-import WithApollo from '../../lib/WithApollo';
-// import styles from './login-form.module.css';
 
 import { useAuth } from '../../context/state';
 
@@ -29,7 +29,6 @@ function LoginForm() {
 
   // set initial state
   const [error, setError] = useState('');
-
   // login user
   const onLogin = async (
     values: ILoginFormProps,
@@ -44,7 +43,6 @@ function LoginForm() {
           password: values.password,
         },
       });
-
       if (data) {
         localStorage.setItem('token', data.login.token);
         login();
@@ -55,47 +53,67 @@ function LoginForm() {
       setSubmitting(false);
     }
   };
+  const Container = styled.div`
+  padding: 50px 0px;
+  background: #5acee8;
+`;
 
+  const FormContainer = styled.div`
+    z-index: 1;
+    position: relative;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    margin: auto;
+    max-width: 100%;
+    width: 540px;
+  `;
   return (
-    <div className=" p-3">
-      <h1 className="display-6 mb-3">Login</h1>
-      <Formik
-        initialValues={{
-          email: '',
-          password: '',
-        }}
-        validationSchema={LoginSchema}
-        onSubmit={onLogin}
-      >
-        <Form>
-          <div className="mb-3">
-            <Field
-              className="form-control"
-              id="email"
-              name="email"
-              placeholder="email"
-              aria-describedby="emailHelp"
-            />
-          </div>
+    <Container className=" p-3">
+      <Head>
+        <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+      </Head>
+      <FormContainer>
+        <h1 className="display-6 mb-3">Login</h1>
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          validationSchema={LoginSchema}
+          onSubmit={onLogin}
+        >
+          <Form>
+            <div className="mb-3">
+              <Field
+                className="form-control"
+                id="email"
+                name="email"
+                placeholder="email"
+                aria-describedby="emailHelp"
+              />
+            </div>
 
-          <div className="mb-3">
-            <Field
-              className="form-control"
-              id="password"
-              name="password"
-              placeholder="Password"
-              type="password"
-            />
-          </div>
+            <div className="mb-3">
+              <Field
+                className="form-control"
+                id="password"
+                name="password"
+                placeholder="Password"
+                type="password"
+              />
+            </div>
 
-          <button type="submit" className="btn btn-primary">
-            Login
-          </button>
-        </Form>
-      </Formik>
-      {error && <div className="text-danger">{error}</div>}
-    </div>
+            <button type="submit" className="btn btn-primary">
+              Login
+            </button>
+          </Form>
+        </Formik>
+        {error && <div className="text-danger">{error}</div>}
+      </FormContainer>
+    </Container>
   );
 }
 
-export default WithApollo(LoginForm);
+export default LoginForm;

@@ -9,14 +9,10 @@ let page: puppeteer.Page;
 // 2
 beforeAll(async () => {
   browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
   });
   page = await browser.newPage();
   await page.goto('http://localhost:3000');
-});
-
-test('test env = test', () => {
-  expect(process.env.NODE_ENV).toBe('test');
 });
 
 test('visit signup page', async () => {
@@ -31,6 +27,8 @@ test('test validations', async () => {
 
   await page.waitForSelector('#errors-email');
 
+  await page.waitForTimeout(500);
+
   const emailValError = await page.$eval('#errors-email', (e) => e.innerHTML);
 
   expect(emailValError).toBe('Invalid email');
@@ -40,6 +38,7 @@ test('test validations', async () => {
   await page.type('#confirmPassword', '12');
 
   await page.focus('#firstName');
+  await page.waitForTimeout(500);
 
   const cnfPassValError = await page.$eval(
     '#errors-confirmPassword',
@@ -63,6 +62,8 @@ test('test validations', async () => {
 
   await page.focus('#phoneNumber');
 
+  await page.waitForTimeout(500);
+
   const lNameValError = await page.$eval(
     '#errors-lastName',
     (e) => e.innerHTML,
@@ -85,6 +86,8 @@ test('test validations', async () => {
 
   await page.focus('#email');
 
+  await page.waitForTimeout(500);
+
   const checkBosError = await page.$eval(
     '#errors-accepted',
     (e) => e.innerHTML,
@@ -98,12 +101,13 @@ test('test validations', async () => {
 });
 
 test('form submit', async () => {
-  expect(process.env.NODE_ENV).toBe('test');
   jest.setTimeout(30000);
   await page.keyboard.press('Enter');
 
   await page.waitForNavigation();
   await page.waitForSelector('#dash-main');
+
+  await page.waitForTimeout(500);
 
   const welcomeField = await page.$eval(
     '#dashboard-name',
@@ -114,12 +118,10 @@ test('form submit', async () => {
 });
 
 test('delete created user', async () => {
-  expect(process.env.NODE_ENV).toBe('test');
-
   await page.waitForSelector('#delete-user');
+  await page.waitForTimeout(500);
+
   await page.click('#delete-user');
-  // await page.focus('#delete-user');
-  // await page.keyboard.press('Enter');
   await page.waitForNavigation();
 });
 

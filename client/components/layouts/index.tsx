@@ -55,7 +55,6 @@ export default function Layout({ children }: IProps) {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <hr />
       <main>{children}</main>
     </div>
   );

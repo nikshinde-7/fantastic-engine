@@ -1,11 +1,11 @@
 import { useMutation, useQuery } from '@apollo/client';
 import styled from '@emotion/styled';
+import Head from 'next/head';
 import React from 'react';
-import WithApollo from '../../lib/WithApollo';
 
 import { GET_USER_BY_TOKEN, DELETE_USER } from '../../graphql/queries';
 
-function Dashboard({ NODE_ENV }:{ NODE_ENV?: string }) {
+function Dashboard() {
   const { loading, error, data } = useQuery(GET_USER_BY_TOKEN);
 
   const [DeleteUserByEmail] = useMutation(DELETE_USER);
@@ -20,6 +20,11 @@ function Dashboard({ NODE_ENV }:{ NODE_ENV?: string }) {
   };
 
   if (loading) { return <span>loading...</span>; }
+
+  const Container = styled.div`
+  padding: 50px 0px;
+  background: #5acee8;
+`;
 
   const FormContainer = styled.div`
     z-index: 1;
@@ -51,58 +56,52 @@ function Dashboard({ NODE_ENV }:{ NODE_ENV?: string }) {
     margin-top: 5px;
   `;
   return (
-    <FormContainer className="container card pb-5 mb-5 w-25" id="dash-main">
-      <div className="card-body">
-        <FormHeading id="dashboard-name" data-testid="dashboard-name">
-          { `Welcome, ${data.getUserByToken.firstName}`}
-        </FormHeading>
-        <div>
-          {data?.getUserByToken && (
-          <div>
-            <div className="row">
-              <FormLabel className="text-justify font-monospace">{`First Name: ${data.getUserByToken.firstName}`}</FormLabel>
-              <FormLabel className="text-justify font-monospace">{`Last Name: ${data.getUserByToken.lastName}`}</FormLabel>
-              <FormLabel className="text-justify font-monospace">{`Email: ${data.getUserByToken.email}`}</FormLabel>
-              <FormLabel className="text-justify font-monospace">{`Phone Number: ${data.getUserByToken.phoneNumber}`}</FormLabel>
+    <Container>
+      <Head>
+        <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+      </Head>
+      <FormContainer className="container card pb-5 mb-5 w-25" id="dash-main">
+        <div className="card-body">
+
+          <div className="row">
+            {data?.getUserByToken && (
+            <div>
+              <FormHeading id="dashboard-name" data-testid="dashboard-name">
+                { `Welcome, ${data.getUserByToken.firstName}`}
+              </FormHeading>
+              <div className="row">
+                <FormLabel className="text-justify font-monospace">{`First Name: ${data.getUserByToken.firstName}`}</FormLabel>
+                <FormLabel className="text-justify font-monospace">{`Last Name: ${data.getUserByToken.lastName}`}</FormLabel>
+                <FormLabel className="text-justify font-monospace">{`Email: ${data.getUserByToken.email}`}</FormLabel>
+                <FormLabel className="text-justify font-monospace">{`Phone Number: ${data.getUserByToken.phoneNumber}`}</FormLabel>
+              </div>
+              <FormError
+                type="button"
+                id="delete-user"
+                style={{ opacity: '0' }}
+                className="row btn btn-sm btn-danger"
+                name={data.getUserByToken.email}
+                onClick={() => onDelete(data.getUserByToken.email)}
+              >
+                Delete User
+              </FormError>
             </div>
-            {/* {NODE_ENV === 'test' && ( */}
-            <FormError
-              type="button"
-              id="delete-user"
-              style={{ opacity: '0' }}
-              className="row btn btn-sm btn-danger"
-              name={data.getUserByToken.email}
-              onClick={() => onDelete(data.getUserByToken.email)}
-            >
-              Delete User
-            </FormError>
-            {/* )} */}
+            )}
           </div>
+          {error && (
+          <pre className="text-danger">
+            Bad:
+            {error?.graphQLErrors.map(({ message }, i) => (
+              <span className="text-danger" id="dash-error" key={i}>
+                {message}
+              </span>
+            ))}
+          </pre>
           )}
         </div>
-        {error && (
-        <pre className="text-danger">
-          Bad:
-          {error?.graphQLErrors.map(({ message }, i) => (
-            <span id="dash-error" key={i}>
-              {message}
-            </span>
-          ))}
-        </pre>
-        )}
-      </div>
-    </FormContainer>
+      </FormContainer>
+    </Container>
   );
 }
 
-export default WithApollo(Dashboard);
-
-export async function getServerSideProps() {
-  const { NODE_ENV = 'development' } = process.env;
-  console.log('NODE_ENV', NODE_ENV);
-  return {
-    props: {
-      NODE_ENV,
-    },
-  };
-}
+export default Dashboard;
