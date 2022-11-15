@@ -61,9 +61,9 @@ input UserCreateInput {
 const userResolvers = {
   Query: {
     users: async (parent: any, args: any, context: any) => {
-      if (!context.user) {
-        throw new AuthenticationError('You must be logged in');
-      }
+      // if (!context.user) {
+      //   throw new AuthenticationError('You must be logged in');
+      // }
       return await getUsers();
     },
     getUserByToken: async (parent: any, args: any, context: any) => {
