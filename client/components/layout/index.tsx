@@ -1,31 +1,30 @@
 // components/layout.js
 import type { NextPage } from 'next';
 import Link from 'next/link';
+import { useAuth } from '../../context/state';
 
 interface IProps {
   children: any;
-  token: string | undefined;
-  logout: () => void;
 }
 
-export default function Layout({ children, token, logout }: IProps) {
-  // const token = localStorage.getItem('token');
+export default function Layout({ children }: IProps) {
+  const { user, login, logout } = useAuth();
   return (
-    <>
+    <div id={'nav'}>
       <Link href={'/'}>
-        <button>Home</button>
+        <button id={'nav-home'}>Home</button>
       </Link>
-      {!token && (
+      {!user && (
         <>
           <Link href={'/signUp'}>
-            <button>Sign Up</button>
+            <button id={'nav-signup'}>Sign Up</button>
           </Link>
           <Link href={'/login'}>
             <button>Login</button>
           </Link>{' '}
         </>
       )}
-      {token && (
+      {user && (
         <>
           <Link href={'/dashboard'}>
             <button>Dashboard</button>
@@ -34,6 +33,6 @@ export default function Layout({ children, token, logout }: IProps) {
         </>
       )}
       <main>{children}</main>
-    </>
+    </div>
   );
 }

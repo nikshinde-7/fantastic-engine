@@ -109,58 +109,21 @@ function SignUpForm(): JSX.Element {
     font-size: 36px;
     margin-bottom: 15px;
   `;
-
+  const FormLabel = styled.label`
+    color: #8c96a3;
+    font-size: 14px;
+    font-weight: 700;
+  `;
   const FormInput = styled.div`
-    width: 100%;
-    padding: 7px 12px;
-    font-size: 16px;
-    border-radius: 10px;
-    border: 2px solid #d7dae0;
-    color: #707070 !important;
-    -webkit-text-fill-color: #707070 !important;
-    background: white;
-    padding-right: 42px;
+    margin-bottom: 15px;
   `;
 
   const FormSubmit = styled.button`
-    white-space: nowrap;
-    box-sizing: border-box !important;
+    background-color: #ffcc01;
     border-radius: 15px;
     height: 40px;
-    line-height: unset;
-    padding: 0px 24px;
-    box-shadow: none;
-    width: 100%;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    color: white;
-    background-color: #ffcc01;
-    border: none;
-    border-color: white;
-    text-align: center;
+    color: #fff;
     font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 0;
-    cursor: pointer;
-    position: relative;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
   `;
 
   const Container = styled.div`
@@ -171,13 +134,18 @@ function SignUpForm(): JSX.Element {
   const FormError = styled.div`
     color: red;
     font-size: 12px;
-    margin-top: 10px;
+    margin-top: 5px;
+  `;
+
+  const FormLabelCheckbox = styled.div`
+    color: #616b77;
+    font-size: 14px;
   `;
 
   return (
-    <Container>
+    <Container id={'signUp-form'}>
       <FormContainer>
-        <FormHeading>Sign Up</FormHeading>
+        <FormHeading>Sign Up Form</FormHeading>
         <Formik
           initialValues={{
             firstName: '',
@@ -194,79 +162,142 @@ function SignUpForm(): JSX.Element {
           {({ values, errors, touched }) => (
             <Form>
               <FormInput>
+                <FormLabel>Email</FormLabel>
                 <Field
                   id="email"
                   name="email"
-                  placeholder="email"
+                  placeholder="Email"
                   aria-describedby="emailHelp"
+                  className="form-control inputField"
                 />
+                {errors.email && touched.email ? (
+                  <FormError id={'errors-email'} data-testid={'errors-email'}>
+                    {errors.email}
+                  </FormError>
+                ) : null}
               </FormInput>
-              {errors.email && touched.email ? (
-                <FormError>{errors.email}</FormError>
-              ) : null}
+
               <FormInput>
+                <FormLabel>Password</FormLabel>
                 <Field
                   id="password"
                   name="password"
                   placeholder="Password"
                   type="password"
+                  className="form-control inputField"
                 />
+                {errors.password && touched.password ? (
+                  <FormError
+                    data-testid={'errors-password'}
+                    id={'errors-password'}
+                  >
+                    {errors.password}
+                  </FormError>
+                ) : null}
               </FormInput>
-              {errors.password && touched.password ? (
-                <FormError>{errors.password}</FormError>
-              ) : null}
+
               <FormInput>
+                <FormLabel>Confirm Password</FormLabel>
                 <Field
                   id="confirmPassword"
                   name="confirmPassword"
-                  placeholder="confirmPassword"
+                  placeholder="Confirm Password"
                   type="confirmPassword"
+                  className="form-control inputField"
                 />
+                {errors.confirmPassword && touched.confirmPassword ? (
+                  <FormError
+                    data-testid={'errors-confirmPassword'}
+                    id={'errors-confirmPassword'}
+                  >
+                    {errors.confirmPassword}
+                  </FormError>
+                ) : null}
               </FormInput>
-              {errors.confirmPassword && touched.confirmPassword ? (
-                <FormError>{errors.confirmPassword}</FormError>
-              ) : null}
+
               <FormInput>
+                <FormLabel>First Name</FormLabel>
                 <Field
                   id="firstName"
                   name="firstName"
                   placeholder="First Name"
                   type="text"
+                  className="form-control inputField"
                 />
+                {errors.firstName && touched.firstName ? (
+                  <FormError
+                    data-testid={'errors-firstName'}
+                    id={'errors-firstName'}
+                  >
+                    {errors.firstName}
+                  </FormError>
+                ) : null}
               </FormInput>
-              {errors.firstName && touched.firstName ? (
-                <FormError>{errors.firstName}</FormError>
-              ) : null}
+
               <FormInput>
+                <FormLabel>Last Name</FormLabel>
                 <Field
                   id="lastName"
                   name="lastName"
                   placeholder="Last Name"
                   type="text"
+                  className="form-control inputField"
                 />
+                {errors.lastName && touched.lastName ? (
+                  <FormError
+                    data-testid={'errors-lastName'}
+                    id={'errors-lastName'}
+                  >
+                    {errors.lastName}
+                  </FormError>
+                ) : null}
               </FormInput>
-              {errors.lastName && touched.lastName ? (
-                <FormError>{errors.lastName}</FormError>
-              ) : null}
+
               <FormInput>
+                <FormLabel>Phone Number</FormLabel>
                 <Field
                   id="phoneNumber"
                   name="phoneNumber"
                   placeholder="Phone Number"
                   type="text"
+                  className="form-control inputField"
                 />
+                {errors.phoneNumber && touched.phoneNumber ? (
+                  <FormError
+                    data-testid={'errors-phoneNumber'}
+                    id={'errors-phoneNumber'}
+                  >
+                    {errors.phoneNumber}
+                  </FormError>
+                ) : null}
               </FormInput>
-              {errors.phoneNumber && touched.phoneNumber ? (
-                <FormError>{errors.phoneNumber}</FormError>
-              ) : null}
-              <label>
-                <Field type="checkbox" name="accept" />
-                Accepted terms & conditions
-              </label>
-              {errors.accept && touched.accept ? (
-                <FormError>{errors.accept}</FormError>
-              ) : null}
-              <FormSubmit id="signUpSubmit">Sign Up</FormSubmit>
+
+              <FormLabelCheckbox className="form-group position-relative">
+                <Field
+                  id={'accepted'}
+                  data-testid={'accepted'}
+                  type="checkbox"
+                  name="accept"
+                  className="mr-2"
+                />
+                <label>Accepted terms & conditions</label>
+                {errors.accept && touched.accept ? (
+                  <FormError
+                    data-testid={'errors-accepted'}
+                    id={'errors-accepted'}
+                  >
+                    {errors.accept}
+                  </FormError>
+                ) : null}
+              </FormLabelCheckbox>
+
+              <FormSubmit
+                id="submit"
+                data-testid={'signUpSubmit'}
+                className="w-100 border-0 mt-3"
+              >
+                Sign Up
+              </FormSubmit>
             </Form>
           )}
         </Formik>

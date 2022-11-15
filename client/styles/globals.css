@@ -14,3 +14,9 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.error {
+  color: red;
+  border-color: red;
+  border: 5ch;
+}

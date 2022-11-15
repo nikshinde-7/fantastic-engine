@@ -51,3 +51,11 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const DELETE_USER = gql`
+  mutation DeleteUserByEmail($email: String!) {
+    deleteUserByEmail(email: $email) {
+      email
+    }
+  }
+`;
